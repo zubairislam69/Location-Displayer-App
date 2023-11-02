@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final DataBaseHelper databaseHelper = new DataBaseHelper(MainActivity.this);
 
+    LocationAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
         allLocations = databaseHelper.getAllData();
 
-        LocationAdapter adapter = new LocationAdapter(this, allLocations, new LocationAdapter.OnEditClickListener() {
+       adapter = new LocationAdapter(this, allLocations, new LocationAdapter.OnEditClickListener() {
             @Override
             public void onEditClick(Location location) {
 
                 Log.d("edit", "YOOOOOOOOOOO");
-                Intent intent = new Intent(MainActivity.this, LocationEditer.class);
+                Intent intent = new Intent(MainActivity.this, LocationEditor.class);
 
                 intent.putExtra("location_id", location.getId());
                 intent.putExtra("location_address", location.getAddress());
@@ -55,7 +58,16 @@ public class MainActivity extends AppCompatActivity {
         }, new LocationAdapter.OnDeleteClickListener() {
             @Override
             public void onDeleteClick(Location location) {
+                int id = location.getId();
 
+                if (id != -1) {
+                    databaseHelper.deleteLocation(id);
+
+                    allLocations.remove(location);
+
+                    // Refresh adapter for updated changes
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -80,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 filterLocations(newText, new LocationAdapter.OnEditClickListener() {
                     @Override
                     public void onEditClick(Location location) {
-                        Intent intent = new Intent(MainActivity.this, LocationEditer.class);
+                        Intent intent = new Intent(MainActivity.this, LocationEditor.class);
 
                         intent.putExtra("location_id", location.getId());
                         intent.putExtra("location_address", location.getAddress());
@@ -92,6 +104,19 @@ public class MainActivity extends AppCompatActivity {
                 }, new LocationAdapter.OnDeleteClickListener() {
                     @Override
                     public void onDeleteClick(Location location) {
+                        int id = location.getId();
+                        Log.d("id", "id: " + id);
+                        if (id != -1) {
+
+                            databaseHelper.deleteLocation(id);
+
+                            Log.d("deleted", "deleted: " + id);
+
+                            allLocations.remove(location);
+
+                            // Refresh adapter for updated changes
+                            adapter.notifyDataSetChanged();
+                        }
 
                     }
                 });
@@ -101,16 +126,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void filterLocations(String query, LocationAdapter.OnEditClickListener onEditClickListener, LocationAdapter.OnDeleteClickListener onDeleteClickListener) {
-        List<Location> filteredNotes = new ArrayList<>();
+        List<Location> filteredLocations = new ArrayList<>();
 
         for (Location location : allLocations) {
             if (location.getAddress().toLowerCase().contains(query.toLowerCase())) {
-                filteredNotes.add(location);
+                filteredLocations.add(location);
             }
         }
 
         // Update the ListView with the filtered list of notes
-        LocationAdapter adapter = new LocationAdapter(this, filteredNotes, onEditClickListener, onDeleteClickListener);
+
+//        adapter.clear();
+//        adapter.addAll(filteredLocations);
+//        adapter.notifyDataSetChanged();
+
+        adapter = new LocationAdapter(this, filteredLocations, onEditClickListener, onDeleteClickListener);
         lvLocations.setAdapter(adapter);
     }
+
 }

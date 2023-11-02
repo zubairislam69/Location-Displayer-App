@@ -136,4 +136,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void deleteLocation(int locationId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = COLUMN_ID + " = ?";
+        String[] whereArgs = {String.valueOf(locationId)};
+        db.delete(TABLE_NAME, whereClause, whereArgs);
+        db.close();
+    }
+
 }

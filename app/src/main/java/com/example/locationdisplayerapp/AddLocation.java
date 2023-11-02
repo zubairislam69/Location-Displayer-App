@@ -15,8 +15,8 @@ public class AddLocation extends AppCompatActivity {
 
     Button btnGoBack, btnSave;
 
-    EditText etAddress, etLatitude, etLongitude;
-
+//    EditText etAddress, etLatitude, etLongitude;
+    TextInputEditText etAddress, etLatitude, etLongitude;
 
 
     private final DataBaseHelper databaseHelper = new DataBaseHelper(AddLocation.this);

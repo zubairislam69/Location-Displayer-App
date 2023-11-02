@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,11 +73,22 @@ public class LocationAdapter extends ArrayAdapter<Location> {
             public void onClick(View v) {
 //                Intent intent = new Intent(LocationAdapter.this, );
                 onDeleteClickListener.onDeleteClick(location);
+//                Log.d("delete", "id: " + location.getId());
+
 
             }
         });
 
         return convertView;
     }
+
+    public void updateData(List<Location> updatedLocations) {
+
+        Log.d("update data", "called");
+        clear(); // Clear the existing data in the adapter
+        addAll(updatedLocations); // Add the updated data
+        notifyDataSetChanged(); // Notify the adapter that the data has changed
+    }
+
 
 }
