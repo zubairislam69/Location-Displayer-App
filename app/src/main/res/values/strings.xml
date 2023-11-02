@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Location Displayer App</string>
+    <string name="AppName">LocationPinned</string>
 </resources>
