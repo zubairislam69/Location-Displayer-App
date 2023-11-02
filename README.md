@@ -5,8 +5,8 @@
 
 
 <p float="left">
-  <img src="screenshots/main-screen.png" width="100" />
-  <img src="screenshots/add-location.png" width="100" /> 
+  <img src="screenshots/main-screen.png" width="200" />
+  <img src="screenshots/add-location.png" width="200" /> 
 </p>
 
 
