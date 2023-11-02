@@ -16,15 +16,17 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper class for managing the SQLite database used to store location data.
+ */
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-//    GeocodingHelper geocodingHelper;
     private static final String TAG = "DataBaseHelper";
-    private static final String TABLE_NAME = "Location";
-    private static final String COLUMN_ID = "id";
-    public static final String COLUMN_ADDRESS = "address";
-    public static final String COLUMN_LATITUDE = "latitude";
-    public static final String COLUMN_LONGITUDE = "longitude";
+    private static final String TABLE_NAME = "Location"; // Name of table
+    private static final String COLUMN_ID = "id"; // Column name for ID
+    public static final String COLUMN_ADDRESS = "address"; //Column name for address
+    public static final String COLUMN_LATITUDE = "latitude"; //Column name for latitude
+    public static final String COLUMN_LONGITUDE = "longitude"; //Column name for longitude
 
     private Context context;
 
@@ -43,7 +45,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(createTableSQL);
 
-        // Open and read the text file containing latitude and longitude pairs
+        // Open and read the text file containing 50 latitude and longitude pairs
         try {
             InputStream inputStream = context.getResources().openRawResource(R.raw.coordinates);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -77,7 +79,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     }
                 }
             }
-
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,6 +90,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     *  Gets all entries from DB and returns it as a list
+     */
     public List<Location> getAllData() {
         List<Location> returnList = new ArrayList<>();
 
@@ -119,6 +123,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
+    /**
+     *  Add a location to the DB
+     */
     public void addLocation(String address, double latitude, double longitude) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -136,6 +143,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     *  Delete a location from the DB
+     */
     public void deleteLocation(int locationId) {
         SQLiteDatabase db = this.getWritableDatabase();
         String whereClause = COLUMN_ID + " = ?";
@@ -144,4 +154,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+    *  Update a location in the DB
+     */
+    public void updateLocation(Location location) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_ADDRESS, location.getAddress());
+        cv.put(COLUMN_LATITUDE, location.getLatitude());
+        cv.put(COLUMN_LONGITUDE, location.getLongitude());
+
+        String whereClause = COLUMN_ID + " = ?";
+        String[] whereArgs = {String.valueOf(location.getId())};
+
+        int rowsUpdated = db.update(TABLE_NAME, cv, whereClause, whereArgs);
+
+        db.close();
+    }
 }
