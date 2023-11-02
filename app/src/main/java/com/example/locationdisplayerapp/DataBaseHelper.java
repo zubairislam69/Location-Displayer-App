@@ -102,8 +102,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             do {
                 int id = cursor.getInt(0);
                 String address = cursor.getString(1);
-                String latitude = cursor.getString(2);
-                String longitude = cursor.getString(3);
+                double latitude = cursor.getDouble(2);
+                double longitude = cursor.getDouble(3);
 
                 Location newLocation = new Location(id, address, latitude, longitude);
 
@@ -117,6 +117,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return returnList;
+    }
+
+    public void addLocation(String address, double latitude, double longitude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ADDRESS, address);
+        values.put(COLUMN_LATITUDE, latitude);
+        values.put(COLUMN_LONGITUDE, longitude);
+
+        long newRowId = db.insert(TABLE_NAME, null, values);
+        db.close();
+
+        if (newRowId != -1) {
+        } else {
+            Log.e(TAG, "Error adding location to the database.");
+        }
     }
 
 }

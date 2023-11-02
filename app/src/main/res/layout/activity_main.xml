@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:cardBackgroundColor="#A6D1A6"
+        app:cardBackgroundColor="#A1BFD6"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/AppName"
                 android:textSize="34sp"
                 android:textStyle="bold" />
@@ -36,7 +37,7 @@
                 android:layout_width="59dp"
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="20dp"
                 android:src="@drawable/location2" />
 
         </RelativeLayout>
@@ -66,6 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
         android:clickable="true"
+        app:backgroundTint="#A1BFD6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
