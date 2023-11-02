@@ -12,7 +12,7 @@ This application populates an SQLite database with 50 addresses, latitudes and l
 
 ## Features
 
-- Update locations
-- Add locations
-- Delete locations
-- Query locations
+- Update Locations
+- Add Locations
+- Delete Locations
+- Query Locations
